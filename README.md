@@ -31,8 +31,8 @@ Os cadastros (turmas, alunos, professores, avaliações e calendário) continuam
 ## Pré-requisitos
 
 - **Node.js** 20 ou mais recente.
-- A **API** rodando, com um professor que tenha senha. O seed da API cria `mariana.alves@escola.local`, senha
-  `professor123`. Para definir a senha de um professor existente, rode na API:
+- A **API** rodando, com um professor que tenha senha. O seed da API cria `admin@admin.com`, senha
+  `admin123`. Para definir a senha de um professor existente, rode na API:
   `npm run teacher:set-password -- <email> <senha>`.
 - O app **Expo Go** no celular ([Android](https://play.google.com/store/apps/details?id=host.exp.exponent) ·
   [iOS](https://apps.apple.com/app/expo-go/id982107779)), ou um emulador Android ou simulador iOS.
