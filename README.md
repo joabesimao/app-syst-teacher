@@ -132,3 +132,4 @@ O plano é extrair esses arquivos para um pacote compartilhado entre os dois pro
 - A API precisa estar em **HTTPS**: Android e iOS bloqueiam HTTP sem criptografia em builds de produção.
 - Os builds e o envio para as lojas são feitos com o EAS: `npx eas-cli@latest build`.
   Veja a [documentação do EAS](https://docs.expo.dev/eas/).
+# mobile-systeacher
