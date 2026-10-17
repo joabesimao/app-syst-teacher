@@ -29,7 +29,7 @@ export default function ClassScreen() {
     discipline: string;
     className: string;
   }>();
-  const teacherId = useAuthStore((state) => state.teacher?.id);
+  const teacherId = useAuthStore((state) => state.user?.teacherId ?? undefined);
   const [tab, setTab] = useState<Tab>("chamadas");
 
   return (
