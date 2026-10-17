@@ -5,13 +5,13 @@ import {
   onSessionChange,
   restoreSession,
 } from "../services/apiClient";
-import type { SessionTeacher } from "../services/apiClient";
+import type { SessionUser } from "../services/apiClient";
 
 type AuthStatus = "restoring" | "authenticated" | "anonymous";
 
 interface AuthState {
   status: AuthStatus;
-  teacher?: SessionTeacher;
+  user?: SessionUser;
   restore: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -19,11 +19,11 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   status: "restoring",
-  teacher: undefined,
+  user: undefined,
 
   restore: async () => {
     const session = await restoreSession();
-    set({ status: session ? "authenticated" : "anonymous", teacher: session?.teacher });
+    set({ status: session ? "authenticated" : "anonymous", user: session?.user });
   },
 
   login: async (email, password) => {
@@ -38,6 +38,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 onSessionChange((session) => {
   useAuthStore.setState({
     status: session ? "authenticated" : "anonymous",
-    teacher: session?.teacher,
+    user: session?.user,
   });
 });

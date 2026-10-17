@@ -1,13 +1,17 @@
-export interface SessionTeacher {
+export type UserRole = "ADMIN" | "TEACHER";
+
+export interface SessionUser {
   id: string;
-  fullName: string;
+  name: string;
   email: string;
+  role: UserRole;
+  teacherId: string | null;
 }
 
 export interface Session {
   accessToken: string;
   refreshToken: string;
-  teacher: SessionTeacher;
+  user: SessionUser;
 }
 
 export interface SessionStore {
@@ -21,7 +25,7 @@ type SessionListener = (session: Session | null) => void;
 type ApiSession = {
   accessToken: string;
   refreshToken: string;
-  teacher: SessionTeacher;
+  user: SessionUser;
 };
 
 export class ApiError extends Error {
@@ -77,10 +81,10 @@ async function setSession(session: Session | null) {
   listeners.forEach((listener) => listener(session));
 }
 
-const toSession = ({ accessToken, refreshToken, teacher }: ApiSession): Session => ({
+const toSession = ({ accessToken, refreshToken, user }: ApiSession): Session => ({
   accessToken,
   refreshToken,
-  teacher: { id: teacher.id, fullName: teacher.fullName, email: teacher.email },
+  user: { id: user.id, name: user.name, email: user.email, role: user.role, teacherId: user.teacherId },
 });
 
 function send(path: string, options: RequestInit, accessToken?: string) {
@@ -181,7 +185,8 @@ export async function logout(): Promise<void> {
 }
 
 export async function restoreSession(): Promise<Session | null> {
-  currentSession = await sessionStore.load();
+  const stored = await sessionStore.load();
+  currentSession = stored?.user ? stored : null;
   if (!currentSession) return null;
 
   try {

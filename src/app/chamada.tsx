@@ -36,7 +36,7 @@ export default function AttendanceScreen() {
     className: string;
     lessonId?: string;
   }>();
-  const teacherId = useAuthStore((state) => state.teacher?.id);
+  const teacherId = useAuthStore((state) => state.user?.teacherId ?? undefined);
 
   const { data, error: loadError, loading } = useAsync(
     useCallback(async (): Promise<AttendanceDraft> => {

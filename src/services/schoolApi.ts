@@ -317,11 +317,14 @@ type ApiCurrentTeacher = Omit<ApiTeacher, "assignments"> & {
   assignments: (ApiTeacherAssignment & { schoolClass: ApiClass })[];
 };
 
-export async function loadCurrentTeacher(): Promise<CurrentTeacher> {
-  const response = await request<ApiCurrentTeacher>("/auth/me");
+type ApiCurrentUser = { teacher: ApiCurrentTeacher | null };
+
+export async function loadCurrentTeacher(): Promise<CurrentTeacher | null> {
+  const { teacher } = await request<ApiCurrentUser>("/auth/me");
+  if (!teacher) return null;
   return {
-    ...mapTeacher(response),
-    assignments: response.assignments.map((assignment) => ({
+    ...mapTeacher(teacher),
+    assignments: teacher.assignments.map((assignment) => ({
       classId: assignment.classId,
       disciplineName: assignment.disciplineName,
       workloadHours: assignment.workloadHours ?? undefined,

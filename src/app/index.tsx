@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import { SHIFT_LABELS } from "../utils/labels";
 
 export default function MyClassesScreen() {
-  const teacher = useAuthStore((state) => state.teacher);
+  const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const { data, error, loading, reload } = useAsync(useCallback(() => loadCurrentTeacher(), []));
 
@@ -34,12 +34,20 @@ export default function MyClassesScreen() {
           refreshControl={<RefreshControl refreshing={loading} onRefresh={reload} />}
           ListHeaderComponent={
             <>
-              <Text style={styles.subtitle}>Olá, {teacher?.fullName}</Text>
+              <Text style={styles.subtitle}>Olá, {user?.name}</Text>
               {error ? <Banner message={error} /> : null}
             </>
           }
           ListEmptyComponent={
-            error ? null : <EmptyState message="Você ainda não tem turmas atribuídas." />
+            error ? null : (
+              <EmptyState
+                message={
+                  data === null
+                    ? "Seu usuário não está vinculado a um professor. Fale com a administração da escola."
+                    : "Você ainda não tem turmas atribuídas."
+                }
+              />
+            )
           }
           renderItem={({ item }) => (
             <Pressable
