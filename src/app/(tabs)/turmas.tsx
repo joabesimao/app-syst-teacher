@@ -1,15 +1,14 @@
 import { useCallback } from "react";
 import { FlatList, Pressable, RefreshControl, Text } from "react-native";
-import { router, Stack } from "expo-router";
-import { Banner, Button, Card, EmptyState, Loading, styles } from "../components/ui";
-import { useAsync } from "../hooks/useAsync";
-import { loadCurrentTeacher } from "../services/schoolApi";
-import { useAuthStore } from "../store/useAuthStore";
-import { SHIFT_LABELS } from "../utils/labels";
+import { router } from "expo-router";
+import { Banner, Card, EmptyState, Loading, styles } from "../../components/ui";
+import { useAsync } from "../../hooks/useAsync";
+import { loadCurrentTeacher } from "../../services/schoolApi";
+import { useAuthStore } from "../../store/useAuthStore";
+import { SHIFT_LABELS } from "../../utils/labels";
 
 export default function MyClassesScreen() {
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
   const { data, error, loading, reload } = useAsync(useCallback(() => loadCurrentTeacher(), []));
 
   const assignments = (data?.assignments ?? [])
@@ -20,9 +19,6 @@ export default function MyClassesScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{ headerRight: () => <Button variant="ghost" title="Sair" onPress={() => void logout()} /> }}
-      />
       {loading && !data ? (
         <Loading />
       ) : (
