@@ -1,3 +1,5 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useState } from "react";
 import type { ReactNode } from "react";
 import {
   ActivityIndicator,
@@ -47,14 +49,44 @@ export function Button({ title, variant = "primary", loading, disabled, style, .
 
 interface FieldProps extends TextInputProps {
   label: string;
+  accessory?: ReactNode;
 }
 
-export function Field({ label, style, ...props }: FieldProps) {
+export function Field({ label, accessory, style, ...props }: FieldProps) {
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput placeholderTextColor={colors.muted} style={[styles.input, style]} {...props} />
+      <View>
+        <TextInput
+          placeholderTextColor={colors.muted}
+          style={[styles.input, accessory ? styles.inputWithAccessory : null, style]}
+          {...props}
+        />
+        {accessory ? <View style={styles.inputAccessory}>{accessory}</View> : null}
+      </View>
     </View>
+  );
+}
+
+export function PasswordField(props: Omit<FieldProps, "secureTextEntry" | "accessory">) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <Field
+      {...props}
+      secureTextEntry={!visible}
+      autoCapitalize="none"
+      autoCorrect={false}
+      accessory={
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={visible ? "Ocultar senha" : "Mostrar senha"}
+          hitSlop={8}
+          onPress={() => setVisible((current) => !current)}
+        >
+          <Ionicons name={visible ? "eye-off-outline" : "eye-outline"} size={22} color={colors.muted} />
+        </Pressable>
+      }
+    />
   );
 }
 
@@ -130,6 +162,14 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
     backgroundColor: colors.surface,
+  },
+  inputWithAccessory: { paddingRight: spacing(6) },
+  inputAccessory: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: spacing(1.5),
+    justifyContent: "center",
   },
   card: {
     backgroundColor: colors.surface,
