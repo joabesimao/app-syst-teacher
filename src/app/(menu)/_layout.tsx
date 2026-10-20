@@ -1,37 +1,38 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Tabs } from "expo-router";
-import { Button } from "../../components/ui";
-import { useAuthStore } from "../../store/useAuthStore";
+import { Drawer } from "expo-router/drawer";
+import { DrawerMenu } from "../../components/DrawerMenu";
 import { colors } from "../../theme";
 
-export default function TabsLayout() {
-  const logout = useAuthStore((state) => state.logout);
-
+export default function MenuLayout() {
   return (
-    <Tabs
+    <Drawer
+      drawerContent={(props) => <DrawerMenu {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.muted,
+        headerTintColor: colors.primary,
         headerTitleStyle: { color: colors.text },
         sceneStyle: { backgroundColor: colors.background },
-        headerRight: () => <Button variant="ghost" title="Sair" onPress={() => void logout()} />,
+        drawerType: "front",
+        swipeEnabled: true,
+        drawerActiveTintColor: colors.primary,
+        drawerActiveBackgroundColor: colors.infoSoft,
+        drawerInactiveTintColor: colors.text,
+        overlayColor: "rgba(24, 28, 50, 0.4)",
       }}
     >
-      <Tabs.Screen
+      <Drawer.Screen
         name="index"
         options={{
           title: "Painel",
-          tabBarIcon: ({ color, size }) => <Ionicons name="stats-chart" color={color} size={size} />,
+          drawerIcon: ({ color, size }) => <Ionicons name="stats-chart" color={color} size={size} />,
         }}
       />
-      <Tabs.Screen
+      <Drawer.Screen
         name="turmas"
         options={{
           title: "Minhas turmas",
-          tabBarLabel: "Turmas",
-          tabBarIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
+          drawerIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
         }}
       />
-    </Tabs>
+    </Drawer>
   );
 }

@@ -79,11 +79,14 @@ src/
   app/                  telas — com o Expo Router, cada arquivo é uma rota
     _layout.tsx         navegação e rotas que exigem login
     login.tsx           login
-    index.tsx           minhas turmas
+    (menu)/             telas do menu lateral (☰): _layout.tsx com o Drawer
+      index.tsx         painel
+      turmas.tsx        minhas turmas
     turma.tsx           abas Chamadas | Avaliações | Alunos
     chamada.tsx         nova chamada e edição de chamada
     notas.tsx           lançamento de notas
   components/ui.tsx     botões, campos, cards e avisos
+  components/DrawerMenu.tsx  conteúdo do menu lateral (usuário, itens e Sair)
   hooks/useAsync.ts     carrega dados e recarrega ao voltar para a tela
   services/             cliente HTTP, sessão e chamadas da API
   store/                estado de login (zustand)

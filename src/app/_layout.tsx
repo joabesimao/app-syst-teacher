@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Loading } from "../components/ui";
@@ -30,6 +31,7 @@ export default function RootLayout() {
   const authenticated = status === "authenticated";
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <QueryClientProvider client={queryClient}>
     <SafeAreaProvider>
       <StatusBar style="dark" />
@@ -44,7 +46,7 @@ export default function RootLayout() {
           <Stack.Screen name="login" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={authenticated}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(menu)" options={{ headerShown: false }} />
           <Stack.Screen name="turma" options={{ title: "Turma" }} />
           <Stack.Screen name="chamada" options={{ title: "Chamada" }} />
           <Stack.Screen name="notas" options={{ title: "Lançar notas" }} />
@@ -54,5 +56,6 @@ export default function RootLayout() {
       </Stack>
     </SafeAreaProvider>
     </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
