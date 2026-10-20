@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Banner, Button, Card, Field, styles } from "../components/ui";
+import { Banner, Button, Card, Field, PasswordField, styles } from "../components/ui";
 import { useAuthStore } from "../store/useAuthStore";
 import { spacing } from "../theme";
 
@@ -48,11 +48,10 @@ export default function LoginScreen() {
             keyboardType="email-address"
             textContentType="username"
           />
-          <Field
+          <PasswordField
             label="Senha"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
             autoComplete="current-password"
             textContentType="password"
             onSubmitEditing={submit}
