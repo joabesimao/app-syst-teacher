@@ -1,4 +1,4 @@
-import { byText, formatDate, formatNumber, formatSigned, plural, sameText, todayIso } from ".";
+import { byText, formatDate, formatNumber, formatSigned, isValidDay, plural, sameText, todayIso } from ".";
 
 describe("format", () => {
   it("formata datas e números no padrão pt-BR", () => {
@@ -19,5 +19,18 @@ describe("format", () => {
     ]);
     expect(plural(1, "aula", "aulas")).toBe("1 aula");
     expect(plural(2, "aula", "aulas")).toBe("2 aulas");
+  });
+});
+
+describe("isValidDay", () => {
+  it.each([
+    ["2026-03-09", true],
+    ["2024-02-29", true],
+    ["2026-02-30", false],
+    ["2026-13-01", false],
+    ["09/03/2026", false],
+    ["2026-3-9", false],
+  ])("%s → %s", (value, expected) => {
+    expect(isValidDay(value)).toBe(expected);
   });
 });

@@ -16,6 +16,11 @@ export const parseScore = (value: string): number | null => {
 
 export const scoreToInput = (score: number | null) => (score === null ? "" : String(score).replace(".", ","));
 
+export const isPositiveNumber = (value: number | null): value is number =>
+  value !== null && Number.isFinite(value) && value > 0;
+
+export const MIN_TITLE_LENGTH = 3;
+
 export const isValidScore = (score: number, maxScore: number) =>
   Number.isFinite(score) && score >= 0 && score <= maxScore;
 

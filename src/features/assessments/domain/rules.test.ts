@@ -19,6 +19,7 @@ const assessment = (id: string, discipline: string, dueDate: string): Assessment
   weight: 1,
   dueDate,
   status: "PLANNED",
+  kind: "REGULAR",
 });
 
 describe("notas", () => {

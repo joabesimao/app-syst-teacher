@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, Text } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles } from "./styles";
 
 export interface ChipOption<T extends string | number> {
@@ -10,10 +10,11 @@ interface ChipGroupProps<T extends string | number> {
   options: ChipOption<T>[];
   value: T;
   onChange: (value: T) => void;
+  label?: string;
 }
 
-export function ChipGroup<T extends string | number>({ options, value, onChange }: ChipGroupProps<T>) {
-  return (
+export function ChipGroup<T extends string | number>({ options, value, onChange, label }: ChipGroupProps<T>) {
+  const chips = (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>
       {options.map((option) => {
         const selected = option.value === value;
@@ -30,5 +31,13 @@ export function ChipGroup<T extends string | number>({ options, value, onChange 
         );
       })}
     </ScrollView>
+  );
+  if (!label) return chips;
+
+  return (
+    <View style={styles.field}>
+      <Text style={styles.label}>{label}</Text>
+      {chips}
+    </View>
   );
 }

@@ -6,16 +6,6 @@ export const ATTENDANCE_STATUSES: readonly AttendanceStatus[] = ["PRESENT", "ABS
 
 export const LESSON_COUNT_LIMITS = { min: 1, max: 10 } as const;
 
-const DAY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-
-export const isValidDay = (value: string) => {
-  const match = DAY_PATTERN.exec(value);
-  if (!match) return false;
-  const [year, month, day] = match.slice(1).map(Number);
-  const date = new Date(Date.UTC(year, month - 1, day));
-  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
-};
-
 export const isValidLessonCount = (count: number) =>
   Number.isInteger(count) && count >= LESSON_COUNT_LIMITS.min && count <= LESSON_COUNT_LIMITS.max;
 

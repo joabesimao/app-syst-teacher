@@ -1,7 +1,7 @@
 import type { ApiPage } from "@/core/http/ApiPage";
 import type { HttpClient } from "@/core/http/HttpClient";
 import type { AssessmentRepository, ListAssessmentsParams } from "../domain/AssessmentRepository";
-import type { Assessment, AssessmentGrades, GradeInput } from "../domain/models";
+import type { Assessment, AssessmentGrades, GradeInput, NewAssessment } from "../domain/models";
 import type { ApiAssessment, ApiAssessmentGrades } from "./dto";
 import { toAssessment, toAssessmentGrades } from "./mappers";
 
@@ -16,6 +16,10 @@ export class HttpAssessmentRepository implements AssessmentRepository {
       signal,
     });
     return response.data.map(toAssessment);
+  }
+
+  async create(assessment: NewAssessment): Promise<Assessment> {
+    return toAssessment(await this.http.post<ApiAssessment>("/assessments", assessment));
   }
 
   async loadGrades(assessmentId: string, classId: string, signal?: AbortSignal): Promise<AssessmentGrades> {

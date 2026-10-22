@@ -4,6 +4,7 @@ import { saveGrades } from "./saveGrades";
 
 const makeRepository = (): jest.Mocked<AssessmentRepository> => ({
   list: jest.fn(),
+  create: jest.fn(),
   loadGrades: jest.fn(),
   saveGrades: jest.fn().mockResolvedValue(undefined),
 });

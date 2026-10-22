@@ -1,7 +1,8 @@
 import { ValidationError } from "@/core/domain/errors";
+import { isValidDay } from "@/shared/format";
 import type { LessonRepository } from "../LessonRepository";
 import type { AttendanceDraft } from "../models";
-import { isValidDay, isValidLessonCount, LESSON_COUNT_LIMITS } from "../rules";
+import { isValidLessonCount, LESSON_COUNT_LIMITS } from "../rules";
 
 export interface SaveAttendanceInput {
   classId: string;
