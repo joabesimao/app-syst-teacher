@@ -1,3 +1,1 @@
-import { StudentDetailScreen } from "../modules/dashboard/screens/StudentDetailScreen";
-
-export default StudentDetailScreen;
+export { StudentDetailScreen as default } from "@/features/dashboard";

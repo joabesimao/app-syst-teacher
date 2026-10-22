@@ -25,15 +25,16 @@ Feito com **React Native + Expo SDK 57** e **Expo Router**, em TypeScript.
   - Aceita vírgula (`8,5`) e não deixa salvar nota acima da nota máxima.
   - Só permite editar avaliações **Em andamento**; as demais abrem só para leitura.
 - **Alunos:** lista de alunos da turma.
+- **Painel:** indicadores do bimestre, situação dos alunos, frequência, ranking, notas das avaliações e boletim.
 
 Os cadastros (turmas, alunos, professores, avaliações e calendário) continuam no sistema web.
 
 ## Pré-requisitos
 
 - **Node.js** 20 ou mais recente.
-- A **API** rodando, com um professor que tenha senha. O seed da API cria `admin@admin.com`, senha
-  `admin123`. Para definir a senha de um professor existente, rode na API:
-  `npm run teacher:set-password -- <email> <senha>`.
+- A **API** rodando, com um professor que tenha senha. O seed da API cria o admin `admin@admin.com` (senha
+  `admin123`) e a professora `delvangela@gmail.com` (senha `123`). Para definir a senha de um usuário existente,
+  rode na API: `npm run user:set-password -- <email> <senha>`.
 - O app **Expo Go** no celular ([Android](https://play.google.com/store/apps/details?id=host.exp.exponent) ·
   [iOS](https://apps.apple.com/app/expo-go/id982107779)), ou um emulador Android ou simulador iOS.
 
@@ -70,46 +71,82 @@ Leia o QR code com o Expo Go (Android) ou com a câmera (iOS). O celular e o com
 | `npx expo start` | Inicia o servidor de desenvolvimento |
 | `npx expo start --web` | Abre o app no navegador |
 | `npm run typecheck` | Checa os tipos com TypeScript |
-| `npm run lint` | Roda o ESLint com a configuração do Expo |
+| `npm run lint` | Roda o ESLint (inclui as regras de dependência entre camadas) |
+| `npm test` | Roda os testes (Jest + React Native Testing Library) |
 
-## Estrutura
+## Arquitetura
+
+Clean Architecture organizada **por feature**. Cada feature tem as mesmas três camadas, e a dependência sempre
+aponta para o domínio:
+
+```
+presentation  ──►  domain  ◄──  data
+(telas, hooks)     (regras)     (HTTP, DTOs)
+```
+
+- **domain**: modelos, regras puras e use cases. Não importa React, Expo, React Query nem `fetch`, o que deixa as
+  regras testáveis sem renderizar nada. Os repositórios são interfaces declaradas aqui.
+- **data**: implementa os repositórios com HTTP. Os DTOs da API e os mappers ficam aqui, então mudanças no
+  formato da API não vazam para as telas.
+- **presentation**: telas, componentes e hooks. Os dados vêm do React Query, que chama os repositórios.
+
+Use case só existe onde há regra (salvar chamada, salvar notas, login, restaurar sessão). Leituras simples vão do
+hook direto ao repositório.
+
+O ESLint impede quebras dessas regras: `domain` não pode importar framework, `data`, `presentation` ou `main`;
+`data` não pode importar `presentation`; `core` e `shared` não podem importar features.
+
+### Pastas
 
 ```
 src/
-  app/                  telas — com o Expo Router, cada arquivo é uma rota
-    _layout.tsx         navegação e rotas que exigem login
-    login.tsx           login
-    (menu)/             telas do menu lateral (☰): _layout.tsx com o Drawer
-      index.tsx         painel
-      turmas.tsx        minhas turmas
-    turma.tsx           abas Chamadas | Avaliações | Alunos
-    chamada.tsx         nova chamada e edição de chamada
-    notas.tsx           lançamento de notas
-  components/ui.tsx     botões, campos, cards e avisos
-  components/DrawerMenu.tsx  conteúdo do menu lateral (usuário, itens e Sair)
-  hooks/useAsync.ts     carrega dados e recarrega ao voltar para a tela
-  services/             cliente HTTP, sessão e chamadas da API
-  store/                estado de login (zustand)
-  types/  utils/        tipos do domínio e formatação
+  app/            rotas do Expo Router; cada arquivo só re-exporta a tela da feature
+  main/           composição: container (injeção de dependência), providers, React Query, variáveis de ambiente
+  core/           base sem regra de negócio: erros, paginação, cliente HTTP, sessão (SecureStore / localStorage)
+  shared/         reaproveitável entre features: ui/ (um componente por pasta), theme, format, navigation
+  features/
+    auth/         login, sessão, menu lateral
+    classes/      minhas turmas e tela da turma (abas)
+    lessons/      chamadas
+    assessments/  avaliações e notas
+    students/     alunos da turma
+    dashboard/    painel
+  test/           utilitários de teste (providers com dependências falsas, mocks)
 ```
 
-### Código compartilhado com o web
+Dentro de cada feature:
 
-Estes arquivos são **cópias idênticas** dos que estão em `front-syst-teacher/src/`. Ao alterar um, altere o outro:
+```
+features/lessons/
+  domain/         models.ts, rules.ts, LessonRepository.ts, usecases/
+  data/           dto.ts, mappers.ts, HttpLessonRepository.ts
+  presentation/   queryKeys.ts, labels.ts, hooks/, components/<Componente>/, screens/<Tela>/
+  index.ts        API pública da feature (outras features e as rotas importam só daqui)
+```
 
-| Arquivo | Conteúdo |
-| --- | --- |
-| `types/domain.ts` | Tipos do domínio (turma, aluno, avaliação, chamada…) |
-| `services/apiClient.ts` | Envio do token, renovação automática da sessão, login e logout |
-| `services/schoolApi.ts` | Funções de cada endpoint da API |
-| `utils/labels.ts` | Rótulos e formatação de datas e números |
-| `store/useAuthStore.ts` | Estado de login |
+Cada componente e cada tela tem a própria pasta, com o componente, o `styles.ts` (`StyleSheet.create`) e um
+`index.ts`.
 
-O que muda entre as plataformas é configurado em `src/app/_layout.tsx` via `configureApi`: a URL da API e onde a
-sessão é guardada. No celular, `services/sessionStore.ts` usa o SecureStore. No navegador, `services/sessionStore.web.ts`
-usa o `localStorage`.
+### Como adicionar uma feature
 
-O plano é extrair esses arquivos para um pacote compartilhado entre os dois projetos.
+1. Crie `src/features/<nome>/` com `domain/`, `data/` e `presentation/`, copiando o esqueleto de uma feature
+   existente.
+2. Declare a interface do repositório em `domain/` e a implementação HTTP em `data/`.
+3. Registre o repositório em `src/main/di/types.ts` e em `src/main/container.ts`.
+4. Exponha as telas no `index.ts` da feature e crie a rota em `src/app/` re-exportando a tela.
+5. Escreva os testes das regras e dos use cases ao lado dos arquivos (`*.test.ts`).
+
+### Desempenho
+
+- **Menos requisições:** o React Query guarda as respostas em cache por recurso (turmas e alunos por 5 min,
+  chamadas e avaliações por 1 min). Ao salvar, só as listas afetadas são recarregadas. Erros 4xx não são repetidos
+  e as falhas de rede têm até 2 novas tentativas, com espera crescente.
+- **Paginação:** chamadas e alunos carregam 30 por vez, e a próxima página vem ao chegar no fim da lista.
+- **Listas virtualizadas:** as listas de leitura usam `FlashList`. Os formulários de chamada e notas usam
+  `FlatList`, porque campos de texto não convivem bem com a reciclagem de células do `FlashList`.
+- **Menos re-render:** linhas memoizadas e estado do formulário por aluno. Marcar a presença de um aluno redesenha
+  só a linha dele.
+- **Requisições canceladas** ao sair da tela (`AbortSignal`).
 
 ## Como funciona o login
 
@@ -124,9 +161,9 @@ O plano é extrair esses arquivos para um pacote compartilhado entre os dois pro
 
 | Sintoma | Causa provável |
 | --- | --- |
-| "Network request failed" no celular | `EXPO_PUBLIC_API_URL` usa `localhost`, o IP está errado, a API está parada ou o firewall bloqueia a porta 3000 |
+| "Sem conexão com o servidor" no celular | `EXPO_PUBLIC_API_URL` usa `localhost`, o IP está errado, a API está parada ou o firewall bloqueia a porta 3000 |
 | Mudei o `.env.local` e nada mudou | Reinicie o `npx expo start` e recarregue o app |
-| Login recusado com a senha certa | O professor está sem senha ou inativo; defina com `npm run teacher:set-password` na API |
+| Login recusado com a senha certa | O professor está sem senha ou inativo; defina com `npm run user:set-password` na API |
 | Erro de CORS no navegador | Inclua a origem do Expo Web (ex.: `http://localhost:8081`) em `CORS_ORIGINS` na API. O app nativo não usa CORS |
 | "Notas só podem ser lançadas…" | A avaliação não está *Em andamento*; mude o status pelo sistema web |
 
