@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 import { colors, radius, spacing } from "../../theme";
 
 export const styles = StyleSheet.create({
+  field: { gap: spacing(0.5) },
+  label: { fontSize: 13, fontWeight: "600", color: colors.text },
   row: { gap: spacing(1), paddingVertical: 2 },
   chip: {
     borderRadius: radius.pill,

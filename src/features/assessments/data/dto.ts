@@ -1,4 +1,4 @@
-import type { AssessmentStatus } from "../domain/models";
+import type { AssessmentKind, AssessmentStatus } from "../domain/models";
 
 export interface ApiAssessment {
   id: string;
@@ -10,6 +10,7 @@ export interface ApiAssessment {
   weight: number;
   dueDate: string;
   status: AssessmentStatus;
+  kind?: AssessmentKind;
 }
 
 export interface ApiGradeItem {

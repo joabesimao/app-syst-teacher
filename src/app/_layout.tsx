@@ -32,6 +32,7 @@ function RootNavigator() {
         <Stack.Screen name="turma" options={{ title: "Turma" }} />
         <Stack.Screen name="chamada" options={{ title: "Chamada" }} />
         <Stack.Screen name="notas" options={{ title: "Lançar notas" }} />
+        <Stack.Screen name="nova-avaliacao" options={{ title: "Nova avaliação" }} />
         <Stack.Screen name="aluno" options={{ title: "Aluno" }} />
         <Stack.Screen name="avaliacao" options={{ title: "Avaliação" }} />
       </Stack.Protected>

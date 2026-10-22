@@ -21,13 +21,16 @@ Feito com **React Native + Expo SDK 57** e **Expo Router**, em TypeScript.
   - Uma chamada nova começa com todos presentes; basta tocar em **Falta** ou **Justificada**.
   - Dá para escolher a data e a quantidade de aulas e anotar o conteúdo.
   - Chamadas já registradas podem ser abertas e corrigidas.
+- **Nova avaliação:** na aba Avaliações da turma. Regular ou recuperação, com data de entrega (define o
+  bimestre), nota máxima, peso e status inicial. A turma e a disciplina vêm da tela da turma.
 - **Lançar notas:**
   - Aceita vírgula (`8,5`) e não deixa salvar nota acima da nota máxima.
   - Só permite editar avaliações **Em andamento**; as demais abrem só para leitura.
 - **Alunos:** lista de alunos da turma.
 - **Painel:** indicadores do bimestre, situação dos alunos, frequência, ranking, notas das avaliações e boletim.
 
-Os cadastros (turmas, alunos, professores, avaliações e calendário) continuam no sistema web.
+Os cadastros (turmas, alunos, professores e calendário), a edição e exclusão de avaliações e a mudança de status
+(iniciar, concluir, reabrir) continuam no sistema web.
 
 ## Pré-requisitos
 

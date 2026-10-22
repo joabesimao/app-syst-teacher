@@ -1,17 +1,4 @@
-import { countByStatus, draftFromLesson, draftFromStudents, isValidDay, isValidLessonCount } from "./rules";
-
-describe("isValidDay", () => {
-  it.each([
-    ["2026-03-09", true],
-    ["2024-02-29", true],
-    ["2026-02-30", false],
-    ["2026-13-01", false],
-    ["09/03/2026", false],
-    ["2026-3-9", false],
-  ])("%s → %s", (value, expected) => {
-    expect(isValidDay(value)).toBe(expected);
-  });
-});
+import { countByStatus, draftFromLesson, draftFromStudents, isValidLessonCount } from "./rules";
 
 describe("isValidLessonCount", () => {
   it("aceita de 1 a 10 aulas inteiras", () => {

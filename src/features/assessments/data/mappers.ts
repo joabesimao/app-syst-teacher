@@ -11,6 +11,7 @@ export const toAssessment = (assessment: ApiAssessment): Assessment => ({
   weight: assessment.weight,
   dueDate: assessment.dueDate.slice(0, 10),
   status: assessment.status,
+  kind: assessment.kind ?? "REGULAR",
 });
 
 export const toAssessmentGrades = (response: ApiAssessmentGrades): AssessmentGrades => ({

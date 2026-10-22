@@ -40,6 +40,7 @@ export function createTestDependencies(overrides: Partial<AppDependencies> = {})
     },
     assessmentRepository: {
       list: jest.fn(),
+      create: jest.fn(),
       loadGrades: jest.fn(),
       saveGrades: jest.fn().mockResolvedValue(undefined),
     },
