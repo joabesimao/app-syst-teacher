@@ -1,3 +1,1 @@
-import { AssessmentDetailScreen } from "../modules/dashboard/screens/AssessmentDetailScreen";
-
-export default AssessmentDetailScreen;
+export { AssessmentDetailScreen as default } from "@/features/dashboard";

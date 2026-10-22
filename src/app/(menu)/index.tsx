@@ -1,3 +1,1 @@
-import { DashboardScreen } from "../../modules/dashboard/screens/DashboardScreen";
-
-export default DashboardScreen;
+export { DashboardScreen as default } from "@/features/dashboard";
