@@ -1,4 +1,4 @@
-export const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn() };
+export const mockRouter = { push: jest.fn(), back: jest.fn(), replace: jest.fn(), setParams: jest.fn() };
 
 export const mockParams: { current: Record<string, string> } = { current: {} };
 

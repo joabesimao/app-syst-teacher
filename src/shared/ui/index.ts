@@ -3,6 +3,7 @@ export * from "./Button";
 export * from "./Card";
 export * from "./Chip";
 export * from "./ChipGroup";
+export * from "./DataTable";
 export * from "./EmptyState";
 export * from "./Field";
 export * from "./ListState";

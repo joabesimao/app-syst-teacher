@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { AssessmentsSection } from "./AssessmentsSection";
 import { ClassAttendanceSection } from "./ClassAttendanceSection";
+import { ConsolidationsSection } from "./ConsolidationsSection";
 import { KpiTiles } from "./KpiTiles";
 import { RankingSection } from "./RankingSection";
 import { ReportCardsSection } from "./ReportCardsSection";
@@ -21,5 +22,6 @@ export const DASHBOARD_SECTIONS: { key: string; Component: ComponentType<Section
   { key: "student-attendance", Component: StudentAttendanceSection },
   { key: "ranking", Component: RankingSection },
   { key: "assessments", Component: AssessmentsSection },
+  { key: "consolidations", Component: ConsolidationsSection },
   { key: "report-cards", Component: ReportCardsSection },
 ];

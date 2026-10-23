@@ -32,6 +32,13 @@ export default function MenuLayout() {
           drawerIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
         }}
       />
+      <Drawer.Screen
+        name="consolidacoes"
+        options={{
+          title: "Consolidações",
+          drawerIcon: ({ color, size }) => <Ionicons name="grid" color={color} size={size} />,
+        }}
+      />
     </Drawer>
   );
 }

@@ -5,6 +5,7 @@ import type { SessionStorage } from "@/core/session/types";
 import { HttpAssessmentRepository } from "@/features/assessments/data/HttpAssessmentRepository";
 import { HttpAuthRepository } from "@/features/auth/data/HttpAuthRepository";
 import { HttpClassRepository } from "@/features/classes/data/HttpClassRepository";
+import { HttpConsolidationRepository } from "@/features/consolidations/data/HttpConsolidationRepository";
 import { HttpDashboardRepository } from "@/features/dashboard/data/HttpDashboardRepository";
 import { HttpLessonRepository } from "@/features/lessons/data/HttpLessonRepository";
 import { HttpStudentRepository } from "@/features/students/data/HttpStudentRepository";
@@ -34,6 +35,7 @@ export function createContainer({
     studentRepository: new HttpStudentRepository(http),
     lessonRepository: new HttpLessonRepository(http),
     assessmentRepository: new HttpAssessmentRepository(http),
+    consolidationRepository: new HttpConsolidationRepository(http),
     dashboardRepository: new HttpDashboardRepository(http),
   };
 }

@@ -3,7 +3,7 @@ import type { SessionManager } from "../session/SessionManager";
 import type { HttpClient, RequestOptions } from "./HttpClient";
 import { toQueryString } from "./HttpClient";
 
-type Method = "GET" | "POST" | "PUT" | "PATCH";
+type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 interface FetchHttpClientOptions {
   baseUrl: string;
@@ -38,6 +38,10 @@ export class FetchHttpClient implements HttpClient {
 
   patch<T>(path: string, body?: unknown, options?: RequestOptions) {
     return this.request<T>("PATCH", path, body, options);
+  }
+
+  delete<T>(path: string, options?: RequestOptions) {
+    return this.request<T>("DELETE", path, undefined, options);
   }
 
   private async request<T>(method: Method, path: string, body: unknown, options: RequestOptions = {}) {
