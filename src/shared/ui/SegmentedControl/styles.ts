@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "transparent",
   },
+  scroll: { flexGrow: 0 },
+  scrollItem: { flex: 0, paddingHorizontal: spacing(2) },
   selected: { backgroundColor: colors.surface, borderColor: colors.border },
   text: { fontWeight: "600", color: colors.muted },
   selectedText: { color: colors.text },
