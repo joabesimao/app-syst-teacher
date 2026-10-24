@@ -1,4 +1,5 @@
 import type { AssessmentStatus } from "@/features/assessments/domain/models";
+import type { ConsolidationScaleKind, ConsolidationScaleOption, OptionCounts } from "@/features/consolidations";
 
 export type FinalStatus = "APPROVED" | "RECOVERY" | "FAILED" | "NO_GRADES";
 
@@ -129,6 +130,34 @@ export interface ReportCard {
   students: ReportCardStudent[];
 }
 
+export interface ConsolidationItemOverview {
+  itemId: string;
+  label: string;
+  answered: number;
+  counts: OptionCounts;
+  performance: number | null;
+}
+
+export interface ConsolidationLowPerformer extends DashboardStudentRef {
+  performance: number;
+}
+
+export interface ConsolidationOverview {
+  id: string;
+  title: string | null;
+  date: string;
+  templateName: string;
+  classId: string;
+  className: string;
+  disciplineName: string;
+  scaleKind: ConsolidationScaleKind;
+  options: ConsolidationScaleOption[];
+  students: number;
+  performance: number | null;
+  items: ConsolidationItemOverview[];
+  lowPerformers: ConsolidationLowPerformer[];
+}
+
 export interface TeacherDashboard {
   schoolYear: number;
   term: number;
@@ -141,4 +170,5 @@ export interface TeacherDashboard {
   evolution: { risers: StudentEvolution[]; fallers: StudentEvolution[] };
   assessments: AssessmentSummary[];
   reportCards: ReportCard[];
+  consolidations: ConsolidationOverview[];
 }

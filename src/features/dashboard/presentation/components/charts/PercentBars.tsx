@@ -7,7 +7,14 @@ import { attendanceColor } from "../../colors";
 import { chartStyles } from "./chartStyles";
 import { barWidthFor, useChartWidth } from "./useChartWidth";
 
-export const PercentBars = memo(function PercentBars({ items }: { items: { label: string; value: number | null }[] }) {
+interface PercentBarsProps {
+  items: { label: string; value: number | null }[];
+  colorFor?: (value: number | null) => string;
+}
+
+const defaultColor = (value: number | null) => attendanceColor(value, colors.primary);
+
+export const PercentBars = memo(function PercentBars({ items, colorFor = defaultColor }: PercentBarsProps) {
   const width = useChartWidth();
   const barWidth = barWidthFor(width, items.length);
   const data = useMemo(
@@ -15,10 +22,10 @@ export const PercentBars = memo(function PercentBars({ items }: { items: { label
       items.map((item) => ({
         value: item.value ?? 0,
         label: item.label.slice(0, 8),
-        frontColor: attendanceColor(item.value, colors.primary),
+        frontColor: colorFor(item.value),
         topLabelComponent: () => <Text style={chartStyles.axisText}>{formatNumber(item.value, "%")}</Text>,
       })),
-    [items]
+    [items, colorFor]
   );
 
   return (

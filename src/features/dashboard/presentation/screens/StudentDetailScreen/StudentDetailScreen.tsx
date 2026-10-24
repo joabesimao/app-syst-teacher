@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { StudentConsolidationsSection } from "@/features/consolidations";
 import { formatNumber } from "@/shared/format";
 import { readParam } from "@/shared/navigation";
 import { colors } from "@/shared/theme";
@@ -68,6 +69,8 @@ export function StudentDetailScreen() {
       <Section title="Médias por disciplina">
         <DisciplineAveragesTable student={student} />
       </Section>
+
+      <StudentConsolidationsSection studentId={student.studentId} />
     </ScrollView>
   );
 }

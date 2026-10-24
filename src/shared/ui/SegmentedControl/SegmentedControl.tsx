@@ -27,7 +27,9 @@ export function SegmentedControl<T extends string>({ segments, value, onChange, 
             onPress={() => onChange(segment.key)}
             style={[styles.item, selected && styles.selected]}
           >
-            <Text style={[styles.text, selected && styles.selectedText]}>{segment.label}</Text>
+            <Text style={[styles.text, selected && styles.selectedText]} numberOfLines={1} adjustsFontSizeToFit>
+              {segment.label}
+            </Text>
           </Pressable>
         );
       })}

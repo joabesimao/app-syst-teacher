@@ -3,6 +3,7 @@ export const queryRoots = {
   students: "students",
   lessons: "lessons",
   assessments: "assessments",
+  consolidations: "consolidations",
   dashboard: "dashboard",
 } as const;
 

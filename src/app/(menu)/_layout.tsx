@@ -22,14 +22,21 @@ export default function MenuLayout() {
         name="index"
         options={{
           title: "Painel",
-          drawerIcon: ({ color, size }) => <Ionicons name="stats-chart" color={color} size={size} />,
+          drawerIcon: ({ color, size }) => <Ionicons name="stats-chart" color={color as string} size={size} />,
         }}
       />
       <Drawer.Screen
         name="turmas"
         options={{
           title: "Minhas turmas",
-          drawerIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
+          drawerIcon: ({ color, size }) => <Ionicons name="people" color={color as string} size={size} />,
+        }}
+      />
+      <Drawer.Screen
+        name="consolidacoes"
+        options={{
+          title: "Consolidações",
+          drawerIcon: ({ color, size }) => <Ionicons name="grid" color={color as string} size={size} />,
         }}
       />
     </Drawer>

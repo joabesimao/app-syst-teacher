@@ -24,4 +24,9 @@ export const routes = {
   newAssessment: (params: ClassRouteParams) => ({ pathname: "/nova-avaliacao", params }) as const,
   dashboardStudent: (params: { classId: string; studentId: string }) => ({ pathname: "/aluno", params }) as const,
   dashboardAssessment: (params: { id: string }) => ({ pathname: "/avaliacao", params }) as const,
+  consolidation: (params: { consolidationId: string }) => ({ pathname: "/consolidacao", params }) as const,
+  newConsolidation: (params: ClassRouteParams) => ({ pathname: "/nova-consolidacao", params }) as const,
+  launchConsolidation: (params: { consolidationId: string; studentId: string }) =>
+    ({ pathname: "/lancar-consolidacao", params }) as const,
+  newConsolidationTemplate: () => ({ pathname: "/novo-modelo" }) as const,
 };
