@@ -23,6 +23,10 @@ export function TemplatesList() {
   const removal = useDeleteTemplate();
   const busy = duplicate.isPending || removal.isPending;
 
+  const onEdit = useCallback(
+    (template: ConsolidationTemplate) => router.push(routes.editConsolidationTemplate({ templateId: template.id })),
+    []
+  );
   const onDuplicate = useCallback((template: ConsolidationTemplate) => duplicate.mutate(template.id), [duplicate]);
   const onDelete = useCallback(
     (template: ConsolidationTemplate) =>
@@ -39,11 +43,12 @@ export function TemplatesList() {
         template={item}
         mine={!!teacherId && item.ownerTeacherId === teacherId}
         busy={busy}
+        onEdit={onEdit}
         onDuplicate={onDuplicate}
         onDelete={onDelete}
       />
     ),
-    [teacherId, busy, onDuplicate, onDelete]
+    [teacherId, busy, onEdit, onDuplicate, onDelete]
   );
 
   const actionError = duplicate.error ?? removal.error;

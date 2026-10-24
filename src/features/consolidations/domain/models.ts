@@ -33,17 +33,47 @@ export interface ConsolidationTemplate {
   options: ConsolidationScaleOption[];
 }
 
+export interface NewScaleOption {
+  label: string;
+  summaryLabel: string | null;
+  color: string;
+  icon: string | null;
+  value: number | null;
+}
+
 export interface NewConsolidationTemplate {
   name: string;
   description?: string | null;
   items: { label: string }[];
-  options: {
-    label: string;
-    summaryLabel: string | null;
-    color: string;
-    icon: string | null;
-    value: number | null;
-  }[];
+  options: NewScaleOption[];
+}
+
+export type ConsolidationTemplateChanges = Partial<NewConsolidationTemplate>;
+
+export interface ScaleOptionDraft {
+  label: string;
+  summaryLabel: string;
+  color: string;
+  icon: string;
+  value: string;
+}
+
+export interface ScaleDraft {
+  scored: boolean;
+  options: ScaleOptionDraft[];
+}
+
+export interface TemplateDraft {
+  name: string;
+  description: string;
+  items: string;
+  scale: ScaleDraft;
+}
+
+export interface ScalePreset {
+  id: string;
+  name: string;
+  scale: ScaleDraft;
 }
 
 export interface Consolidation {

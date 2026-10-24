@@ -10,6 +10,7 @@ import type {
   ConsolidationSheet,
   ConsolidationStatus,
   ConsolidationTemplate,
+  ConsolidationTemplateChanges,
   NewConsolidation,
   NewConsolidationTemplate,
   ResponseInput,
@@ -38,6 +39,12 @@ export class HttpConsolidationRepository implements ConsolidationRepository {
 
   async createTemplate(template: NewConsolidationTemplate): Promise<ConsolidationTemplate> {
     return toTemplate(await this.http.post<ApiConsolidationTemplate>("/consolidation-templates", template));
+  }
+
+  async updateTemplate(templateId: string, changes: ConsolidationTemplateChanges): Promise<ConsolidationTemplate> {
+    return toTemplate(
+      await this.http.patch<ApiConsolidationTemplate>(`/consolidation-templates/${templateId}`, changes)
+    );
   }
 
   async duplicateTemplate(templateId: string): Promise<ConsolidationTemplate> {

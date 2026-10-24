@@ -6,6 +6,7 @@ export { OptionTag } from "./presentation/components/OptionTag";
 export { StudentConsolidationsSection } from "./presentation/components/StudentConsolidationsSection";
 export { ConsolidationScreen } from "./presentation/screens/ConsolidationScreen";
 export { ConsolidationsHomeScreen } from "./presentation/screens/ConsolidationsHomeScreen";
+export { EditTemplateScreen } from "./presentation/screens/EditTemplateScreen";
 export { LaunchResponsesScreen } from "./presentation/screens/LaunchResponsesScreen";
 export { NewConsolidationScreen } from "./presentation/screens/NewConsolidationScreen";
 export { NewTemplateScreen } from "./presentation/screens/NewTemplateScreen";

@@ -39,6 +39,7 @@ function RootNavigator() {
         <Stack.Screen name="nova-consolidacao" options={{ title: "Nova consolidação" }} />
         <Stack.Screen name="lancar-consolidacao" options={{ title: "Lançar respostas" }} />
         <Stack.Screen name="novo-modelo" options={{ title: "Novo modelo" }} />
+        <Stack.Screen name="editar-modelo" options={{ title: "Editar modelo" }} />
       </Stack.Protected>
     </Stack>
   );

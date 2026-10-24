@@ -47,6 +47,7 @@ export function createTestDependencies(overrides: Partial<AppDependencies> = {})
     consolidationRepository: {
       listTemplates: jest.fn(),
       createTemplate: jest.fn(),
+      updateTemplate: jest.fn(),
       duplicateTemplate: jest.fn(),
       deleteTemplate: jest.fn().mockResolvedValue(undefined),
       list: jest.fn(),
