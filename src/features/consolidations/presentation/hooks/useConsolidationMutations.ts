@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDependencies } from "@/main/di";
 import { queryRoots } from "@/shared/query/queryRoots";
-import type { ConsolidationStatus } from "../../domain/models";
-import type { CreateConsolidationInput, CreateTemplateInput, SaveResponsesInput } from "../../domain/usecases";
-import { createConsolidation, createTemplate, saveResponses } from "../../domain/usecases";
+import type { ConsolidationStatus, TemplateDraft } from "../../domain/models";
+import type { CreateConsolidationInput, SaveResponsesInput, UpdateTemplateInput } from "../../domain/usecases";
+import { createConsolidation, createTemplate, saveResponses, updateTemplate } from "../../domain/usecases";
 
 function useInvalidate() {
   const queryClient = useQueryClient();
@@ -54,7 +54,16 @@ export function useCreateTemplate() {
   const dependencies = useDependencies();
   const onSuccess = useInvalidate();
   return useMutation({
-    mutationFn: (input: CreateTemplateInput) => createTemplate(dependencies, input),
+    mutationFn: (draft: TemplateDraft) => createTemplate(dependencies, draft),
+    onSuccess,
+  });
+}
+
+export function useUpdateTemplate() {
+  const dependencies = useDependencies();
+  const onSuccess = useInvalidate();
+  return useMutation({
+    mutationFn: (input: UpdateTemplateInput) => updateTemplate(dependencies, input),
     onSuccess,
   });
 }

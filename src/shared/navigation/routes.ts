@@ -29,4 +29,5 @@ export const routes = {
   launchConsolidation: (params: { consolidationId: string; studentId: string }) =>
     ({ pathname: "/lancar-consolidacao", params }) as const,
   newConsolidationTemplate: () => ({ pathname: "/novo-modelo" }) as const,
+  editConsolidationTemplate: (params: { templateId: string }) => ({ pathname: "/editar-modelo", params }) as const,
 };

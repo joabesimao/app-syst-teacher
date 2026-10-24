@@ -3,6 +3,7 @@ import type {
   ConsolidationSheet,
   ConsolidationStatus,
   ConsolidationTemplate,
+  ConsolidationTemplateChanges,
   ConsolidationTemplateScope,
   NewConsolidation,
   NewConsolidationTemplate,
@@ -24,6 +25,7 @@ export interface ListTemplatesParams {
 export interface ConsolidationRepository {
   listTemplates(params: ListTemplatesParams): Promise<ConsolidationTemplate[]>;
   createTemplate(template: NewConsolidationTemplate): Promise<ConsolidationTemplate>;
+  updateTemplate(templateId: string, changes: ConsolidationTemplateChanges): Promise<ConsolidationTemplate>;
   duplicateTemplate(templateId: string): Promise<ConsolidationTemplate>;
   deleteTemplate(templateId: string): Promise<void>;
   list(params: ListConsolidationsParams): Promise<Consolidation[]>;

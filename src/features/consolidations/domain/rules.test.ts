@@ -1,12 +1,14 @@
 import { ValidationError } from "@/core/domain/errors";
-import { makeSheet, right, template } from "../test/fixtures";
+import { makeSheet, right, template, wrong } from "../test/fixtures";
 import { changedResponses, optionTag, templatesForDiscipline } from "./rules";
-import { createConsolidation, createTemplate, parseItems, saveResponses } from "./usecases";
+import { buildScale, draftFromTemplate, emptyOption, SCALE_COLORS, SCALE_PRESETS, scaleFromTemplate } from "./scale";
+import { createConsolidation, createTemplate, parseItems, saveResponses, updateTemplate } from "./usecases";
 
 const repository = () => ({
   consolidationRepository: {
     listTemplates: jest.fn(),
     createTemplate: jest.fn(),
+    updateTemplate: jest.fn(),
     duplicateTemplate: jest.fn(),
     deleteTemplate: jest.fn(),
     list: jest.fn(),
@@ -78,19 +80,76 @@ describe("casos de uso de consolidação", () => {
     expect(deps.consolidationRepository.saveResponses).not.toHaveBeenCalled();
   });
 
-  it("cria o modelo copiando a escala do modelo base", async () => {
+  it("cria o modelo com a escala do rascunho", async () => {
     const deps = repository();
-    await expect(createTemplate(deps, { name: "ab", items: "x", base: template })).rejects.toThrow(/nome/);
-    await expect(createTemplate(deps, { name: "Frações", items: " ", base: template })).rejects.toThrow(/item/);
-    await expect(createTemplate(deps, { name: "Frações", items: "x", base: null })).rejects.toThrow(/escala/);
-    await createTemplate(deps, { name: " Frações ", items: "Soma\nProduto", base: template });
+    const draft = { name: " Frações ", description: " ", items: "Soma\nProduto", scale: scaleFromTemplate(template) };
+    await expect(createTemplate(deps, { ...draft, name: "ab" })).rejects.toThrow(/nome/);
+    await expect(createTemplate(deps, { ...draft, items: " " })).rejects.toThrow(/item/);
+    await createTemplate(deps, draft);
     expect(deps.consolidationRepository.createTemplate).toHaveBeenCalledWith({
       name: "Frações",
+      description: null,
       items: [{ label: "Soma" }, { label: "Produto" }],
       options: [
         { label: "Acertou", summaryLabel: "Acertos", color: "#2E7D32", icon: "🟩", value: 1 },
         { label: "Errou", summaryLabel: "Erros", color: "#C62828", icon: "🟥", value: 0 },
       ],
+    });
+  });
+
+  it("edita tudo no modelo livre e só nome/descrição no modelo em uso", async () => {
+    const deps = repository();
+    const draft = { ...draftFromTemplate(template), name: "Operações", description: "Diagnóstico" };
+    await updateTemplate(deps, { template, draft });
+    expect(deps.consolidationRepository.updateTemplate).toHaveBeenLastCalledWith(
+      "t1",
+      expect.objectContaining({ name: "Operações", items: [{ label: "Adição" }, { label: "Subtração" }] })
+    );
+    await updateTemplate(deps, { template: { ...template, locked: true }, draft: { ...draft, items: "" } });
+    expect(deps.consolidationRepository.updateTemplate).toHaveBeenLastCalledWith("t1", {
+      name: "Operações",
+      description: "Diagnóstico",
+    });
+  });
+});
+
+describe("escala do modelo", () => {
+  const scored = (values: string[]) => ({
+    scored: true,
+    options: values.map((value, index) => ({ ...emptyOption(index), label: `O${index}`, value })),
+  });
+
+  it("valida quantidade, rótulos e valores", () => {
+    expect(() => buildScale({ scored: false, options: [{ ...emptyOption(0), label: "A" }] })).toThrow(/ao menos 2/);
+    expect(() => buildScale({ scored: false, options: [emptyOption(0), emptyOption(1)] })).toThrow(/rótulo/);
+    expect(() =>
+      buildScale({ scored: false, options: [{ ...emptyOption(0), label: "Sim" }, { ...emptyOption(1), label: " sim " }] })
+    ).toThrow(/repetidas/);
+    expect(() => buildScale(scored(["1", ""]))).toThrow(/valor/);
+    expect(() => buildScale(scored(["1", "-2"]))).toThrow(/valor/);
+    expect(() => buildScale(scored(["0", "0"]))).toThrow(/mais que zero/);
+  });
+
+  it("converte o rascunho: vírgula decimal, opcionais vazios viram null e sem pontuação ignora valores", () => {
+    expect(buildScale(scored(["0,5", "1"]))).toEqual([
+      { label: "O0", summaryLabel: null, color: SCALE_COLORS[0], icon: null, value: 0.5 },
+      { label: "O1", summaryLabel: null, color: SCALE_COLORS[1], icon: null, value: 1 },
+    ]);
+    expect(buildScale({ ...scored(["1", "x"]), scored: false }).map((option) => option.value)).toEqual([null, null]);
+  });
+
+  it("todos os presets são escalas válidas, exceto o 'Do zero' que pede rótulos", () => {
+    for (const preset of SCALE_PRESETS.filter((item) => item.id !== "blank")) {
+      expect(() => buildScale(preset.scale)).not.toThrow();
+    }
+  });
+
+  it("monta o rascunho a partir de um modelo existente", () => {
+    expect(draftFromTemplate({ ...template, options: [{ ...right, value: null }, wrong] }).scale.scored).toBe(false);
+    expect(draftFromTemplate(template)).toMatchObject({
+      name: "Quatro operações",
+      items: "Adição\nSubtração",
+      scale: { scored: true, options: [{ label: "Acertou", value: "1", icon: "🟩" }, { label: "Errou", value: "0" }] },
     });
   });
 });
