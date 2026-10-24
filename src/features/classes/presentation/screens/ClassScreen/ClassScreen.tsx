@@ -28,7 +28,7 @@ export function ClassScreen() {
   return (
     <View style={commonStyles.screen}>
       <Stack.Screen options={{ title: `${params.className} · ${params.discipline}` }} />
-      <SegmentedControl segments={TABS} value={tab} onChange={setTab} style={styles.tabs} />
+      <SegmentedControl segments={TABS} value={tab} onChange={setTab} style={styles.tabs} scrollable />
       {tab === "chamadas" ? <LessonsTab {...params} /> : null}
       {tab === "avaliacoes" ? <AssessmentsTab {...params} /> : null}
       {tab === "consolidacoes" ? <ConsolidationsTab {...params} /> : null}
