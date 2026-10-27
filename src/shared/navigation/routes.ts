@@ -16,7 +16,15 @@ export type GradesRouteParams = {
   status: string;
 };
 
+export type ClassStudentsRouteParams = {
+  classId: string;
+  className: string;
+};
+
 export const routes = {
+  newClass: () => ({ pathname: "/nova-turma" }) as const,
+  classStudents: (params: ClassStudentsRouteParams) => ({ pathname: "/alunos-turma", params }) as const,
+  newStudent: (params: ClassStudentsRouteParams) => ({ pathname: "/novo-aluno", params }) as const,
   classDetail: (params: ClassRouteParams) => ({ pathname: "/turma", params }) as const,
   attendance: ({ lessonId, ...params }: AttendanceRouteParams) =>
     ({ pathname: "/chamada", params: lessonId ? { ...params, lessonId } : params }) as const,

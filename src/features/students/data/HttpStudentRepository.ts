@@ -2,7 +2,7 @@ import type { Page } from "@/core/domain/pagination";
 import type { ApiPage } from "@/core/http/ApiPage";
 import type { HttpClient } from "@/core/http/HttpClient";
 import { PAGE_SIZE } from "@/shared/query/queryRoots";
-import type { Student } from "../domain/models";
+import type { NewStudent, Student } from "../domain/models";
 import type { ListStudentsParams, StudentRepository } from "../domain/StudentRepository";
 import type { ApiStudent } from "./dto";
 import { toStudent } from "./mappers";
@@ -24,6 +24,10 @@ export class HttpStudentRepository implements StudentRepository {
       )
     );
     return [first, ...rest].flatMap((page) => page.data);
+  }
+
+  async create(student: NewStudent): Promise<Student> {
+    return toStudent(await this.http.post<ApiStudent>("/students", student));
   }
 
   private async fetchPage(classId: string, page: number, limit: number, signal?: AbortSignal) {

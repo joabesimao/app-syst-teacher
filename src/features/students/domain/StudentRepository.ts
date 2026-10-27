@@ -1,5 +1,5 @@
 import type { Page } from "@/core/domain/pagination";
-import type { Student } from "./models";
+import type { NewStudent, Student } from "./models";
 
 export interface ListStudentsParams {
   classId: string;
@@ -10,4 +10,5 @@ export interface ListStudentsParams {
 export interface StudentRepository {
   listByClass(params: ListStudentsParams): Promise<Page<Student>>;
   listAllByClass(classId: string, signal?: AbortSignal): Promise<Student[]>;
+  create(student: NewStudent): Promise<Student>;
 }

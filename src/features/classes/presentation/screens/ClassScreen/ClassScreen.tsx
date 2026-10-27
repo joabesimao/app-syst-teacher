@@ -32,7 +32,7 @@ export function ClassScreen() {
       {tab === "chamadas" ? <LessonsTab {...params} /> : null}
       {tab === "avaliacoes" ? <AssessmentsTab {...params} /> : null}
       {tab === "consolidacoes" ? <ConsolidationsTab {...params} /> : null}
-      {tab === "alunos" ? <StudentsTab classId={params.classId} /> : null}
+      {tab === "alunos" ? <StudentsTab classId={params.classId} className={params.className} /> : null}
     </View>
   );
 }

@@ -29,8 +29,8 @@ export function createTestDependencies(overrides: Partial<AppDependencies> = {})
   return {
     session: new SessionManager(memoryStorage()),
     authRepository: { login: jest.fn(), renew: jest.fn(), logout: jest.fn(), checkSession: jest.fn() },
-    classRepository: { loadCurrentTeacher: jest.fn() },
-    studentRepository: { listByClass: jest.fn(), listAllByClass: jest.fn() },
+    classRepository: { loadCurrentTeacher: jest.fn(), list: jest.fn(), create: jest.fn() },
+    studentRepository: { listByClass: jest.fn(), listAllByClass: jest.fn(), create: jest.fn() },
     lessonRepository: {
       list: jest.fn(),
       loadAttendance: jest.fn(),
