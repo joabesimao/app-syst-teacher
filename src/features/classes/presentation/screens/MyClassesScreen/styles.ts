@@ -2,5 +2,5 @@ import { StyleSheet } from "react-native";
 import { spacing } from "@/shared/theme";
 
 export const styles = StyleSheet.create({
-  greeting: { marginBottom: spacing(1.5) },
+  header: { gap: spacing(1.5), marginBottom: spacing(1.5) },
 });

@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Drawer } from "expo-router/drawer";
-import { DrawerMenu } from "@/features/auth";
+import { DrawerMenu, useCurrentUser } from "@/features/auth";
 import { colors } from "@/shared/theme";
 
 const screenOptions = {
@@ -16,6 +16,8 @@ const screenOptions = {
 };
 
 export default function MenuLayout() {
+  const isAdmin = useCurrentUser()?.role === "ADMIN";
+
   return (
     <Drawer drawerContent={(props) => <DrawerMenu {...props} />} screenOptions={screenOptions}>
       <Drawer.Screen
@@ -32,6 +34,15 @@ export default function MenuLayout() {
           drawerIcon: ({ color, size }) => <Ionicons name="people" color={color as string} size={size} />,
         }}
       />
+      <Drawer.Protected guard={isAdmin}>
+        <Drawer.Screen
+          name="turmas-escola"
+          options={{
+            title: "Turmas da escola",
+            drawerIcon: ({ color, size }) => <Ionicons name="school" color={color as string} size={size} />,
+          }}
+        />
+      </Drawer.Protected>
       <Drawer.Screen
         name="consolidacoes"
         options={{

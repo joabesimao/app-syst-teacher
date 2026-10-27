@@ -34,6 +34,9 @@ function RootNavigator() {
         <Stack.Screen name="notas" options={{ title: "Lançar notas" }} />
         <Stack.Screen name="nova-avaliacao" options={{ title: "Nova avaliação" }} />
         <Stack.Screen name="aluno" options={{ title: "Aluno" }} />
+        <Stack.Screen name="nova-turma" options={{ title: "Nova turma" }} />
+        <Stack.Screen name="alunos-turma" options={{ title: "Alunos" }} />
+        <Stack.Screen name="novo-aluno" options={{ title: "Novo aluno" }} />
         <Stack.Screen name="avaliacao" options={{ title: "Avaliação" }} />
         <Stack.Screen name="consolidacao" options={{ title: "Consolidação" }} />
         <Stack.Screen name="nova-consolidacao" options={{ title: "Nova consolidação" }} />

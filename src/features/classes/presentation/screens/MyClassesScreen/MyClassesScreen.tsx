@@ -5,7 +5,7 @@ import { FlashList } from "@shopify/flash-list";
 import type { ListRenderItem } from "@shopify/flash-list";
 import { useCurrentUser } from "@/features/auth";
 import { routes } from "@/shared/navigation";
-import { commonStyles, ListState } from "@/shared/ui";
+import { Button, commonStyles, ListState } from "@/shared/ui";
 import type { TeacherAssignment } from "../../../domain/models";
 import { assignmentKey } from "../../../domain/rules";
 import { AssignmentCard } from "../../components/AssignmentCard";
@@ -41,7 +41,12 @@ export function MyClassesScreen() {
       renderItem={renderItem}
       ItemSeparatorComponent={Separator}
       refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={() => void refetch()} />}
-      ListHeaderComponent={<Text style={[commonStyles.subtitle, styles.greeting]}>Olá, {user?.name}</Text>}
+      ListHeaderComponent={
+        <View style={styles.header}>
+          <Text style={commonStyles.subtitle}>Olá, {user?.name}</Text>
+          <Button title="Nova turma" onPress={() => router.push(routes.newClass())} />
+        </View>
+      }
       ListEmptyComponent={
         <ListState
           isPending={isPending}

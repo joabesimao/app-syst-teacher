@@ -20,3 +20,19 @@ export interface CurrentTeacher {
   fullName: string;
   assignments: TeacherAssignment[];
 }
+
+export interface NewSchoolClass {
+  name: string;
+  gradeLevel: string;
+  schoolYear: number;
+  shift?: SchoolShift;
+  disciplineName?: string;
+}
+
+export interface SchoolClassDraft {
+  name: string;
+  gradeLevel: string;
+  schoolYear: string;
+  shift: SchoolShift | null;
+  disciplineName: string;
+}
